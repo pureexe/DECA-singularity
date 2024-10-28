@@ -1,0 +1,18 @@
+Bootstrap: docker
+From: pytorch/pytorch:1.6.0-cuda10.1-cudnn7-runtime
+Stage: build
+
+%files
+    requirements.txt requirements.txt
+
+%post
+    # install pytorch related library
+    pip install -r requirements.txt
+    NOW=`date`
+    echo "export NOW=\"${NOW}\"" >> $SINGULARITY_ENVIRONMENT
+
+%labels
+    Version v0.0.1
+
+%help
+    Container for DECA
