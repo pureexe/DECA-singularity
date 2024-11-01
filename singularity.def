@@ -1,12 +1,17 @@
 Bootstrap: docker
-From: pytorch/pytorch:1.6.0-cuda10.1-cudnn7-runtime
+From: pytorch/pytorch:1.6.0-cuda10.1-cudnn7-devel
 Stage: build
 
 %files
     requirements.txt requirements.txt
 
 %post
+    # hacky work around to apt update 
+    rm /etc/apt/sources.list.d/cuda.list
+    rm /etc/apt/sources.list.d/nvidia-ml.list
     # install pytorch related library
+    apt update
+    apt install -y libglib2.0-0 libsm6 libxrender1 libxext6
     pip install -r requirements.txt
     NOW=`date`
     echo "export NOW=\"${NOW}\"" >> $SINGULARITY_ENVIRONMENT
